@@ -39,6 +39,7 @@ function AddMovie() {
         try {
             const objIp = apiRes.results[parseInt(data.objectInput)];
             const idOfthemovie = objIp.id;
+            
 
             // fetching credits data from the TMDB API
             const url = `https://api.themoviedb.org/3/movie/${idOfthemovie}/credits?language=en-US`;
@@ -65,7 +66,7 @@ function AddMovie() {
 
             // sending the final data object to the server
             const finalObjectToBeSentToTheServer = {
-                mainObject: apiRes,
+                mainObject: objIp,
                 details: details_res_json,
                 credits: credits_res_json
             };
