@@ -19,12 +19,11 @@ function AddMovie() {
             const movie = data.movieInput;
 
             // sending the movie to the TMDB API
-            const url = `https://api.themoviedb.org/3/search/movie?query=${movie}&include_adult=false&language=en-US&page=1`;
+            const url = `https://api.themoviedb.org/3/search/movie?api_key=${import.meta.env.VITE_TMDB_API_KEY}&query=${movie}&include_adult=false&language=en-US&page=1`;
             const options = {
                 method: 'GET',
                 headers: {
-                    accept: 'application/json',
-                    Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_READ_ACCESS_TOKEN} `
+                    accept: 'application/json'
                 }
             };
             const api_res = await fetch(url, options);
@@ -42,24 +41,22 @@ function AddMovie() {
             
 
             // fetching credits data from the TMDB API
-            const url = `https://api.themoviedb.org/3/movie/${idOfthemovie}/credits?language=en-US`;
+            const url = `https://api.themoviedb.org/3/movie/${idOfthemovie}/credits?api_key=${import.meta.env.VITE_TMDB_API_KEY}&language=en-US`;
             const options = {
                 method: 'GET',
                 headers: {
-                    accept: 'application/json',
-                    Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_READ_ACCESS_TOKEN}`
+                    accept: 'application/json'
                 }
             };
             const credits_res = await fetch(url, options)
             const credits_res_json = await credits_res.json();
 
             // fetching details data from the TMDB API
-            const details_url = `https://api.themoviedb.org/3/movie/${idOfthemovie}?language=en-US`;
+            const details_url = `https://api.themoviedb.org/3/movie/${idOfthemovie}?api_key=${import.meta.env.VITE_TMDB_API_KEY}&language=en-US`;
             const details_res = await fetch(details_url, {
                 method: 'GET',
                 headers: {
-                    accept: 'application/json',
-                    Authorization: `Bearer ${import.meta.env.VITE_TMDB_API_READ_ACCESS_TOKEN}`
+                    accept: 'application/json'
                 }
             });
             const details_res_json = await details_res.json();
