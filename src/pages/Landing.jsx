@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react'
 import { MdLocalMovies } from "react-icons/md";
 import { CiSearch } from "react-icons/ci";
 import MovieCard from '../components/MovieCard';
+import { useNavigate } from "react-router";
 
 function Landing() {
+    let navigate = useNavigate();
     const [movies, setMovies] = useState([]);
     useEffect(() => {
         fetch(`${import.meta.env.VITE_ADDRESS_OF_THE_SERVER}getMovies`, {
@@ -21,13 +23,12 @@ function Landing() {
                 <div className='relative outline-2 rounded'>
                     <input className='px-3 outline-0 py-2 w-9/10' placeholder='Search movie' type="text" />
                     <div className='absolute w-1/10 right-3 top-0 h-full flex items-center'>
-                        <button type='submit'><CiSearch className='text-3xl' /></button>
+                        <button onContextMenu={()=>navigate('/addmovie')} type='submit'><CiSearch className='text-3xl' /></button>
                     </div>
                 </div>
             </form>
             {/* main card holder */}
             <div className='flex gap-7 flex-wrap justify-center px-2 my-4'>
-                {console.log(import.meta.env.VITE_ADDRESS_OF_THE_SERVER)}
                 {movies.data?.map((cur) => (
                     <MovieCard key={cur.id} movie={cur} />
                 ))}
