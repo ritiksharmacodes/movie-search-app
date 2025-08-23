@@ -27,6 +27,7 @@ function Landing() {
             </form>
             {/* main card holder */}
             <div className='flex gap-7 flex-wrap justify-center px-2 my-4'>
+                {console.log(import.meta.env.VITE_ADDRESS_OF_THE_SERVER)}
                 {movies.data?.map((cur) => (
                     <MovieCard key={cur.id} movie={cur} />
                 ))}
