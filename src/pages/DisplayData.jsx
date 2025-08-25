@@ -15,6 +15,8 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
+import CircularProgress from '@mui/material/CircularProgress';
+
 const style = {
     position: 'absolute',
     top: '50%',
@@ -31,23 +33,35 @@ function DisplayData() {
     let params = useParams();
     const [movie, setMovie] = useState({});
     const [showOverview, setShowOverview] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
 
     useEffect(() => {
+        setIsLoading(true);
         fetch(`${import.meta.env.VITE_ADDRESS_OF_THE_SERVER}getMovie/${params.movie_id}`, {
             method: 'GET',
             mode: 'cors'
         })
             .then((res) => res.json())
-            .then((data) => setMovie(data.data[0]))
-            .catch((err) => console.log(err));
+            .then((data) => {
+                setMovie(data.data[0]);
+                setIsLoading(false);
+            })
+            .catch((err) => {
+                console.log(err);
+                setIsLoading(false); 
+            });
     }, [params]);
     console.log(movie);
 
     return (
         <>
+            {isLoading ? (<Box sx={{ margin: '0', backdropFilter: 'blur(4px)', zIndex: '99999', position: 'fixed', top: '0', width: '100%', height: '100vh' }}>
+                <CircularProgress sx={{ color: 'black', position: 'absolute', top: '50%', left: '50%', translate: '-50%' }} />
+            </Box>) : <></>}
+
             <div className='flex flex-col gap-3'>
                 <div className={`h-70 w-45 m-auto mt-7`}>
                     <img className='h-full w-full rounded-md' src={`https://image.tmdb.org/t/p/original${movie.poster_path}`} alt="" />
@@ -68,8 +82,8 @@ function DisplayData() {
                     <p className='text-xs'>Director</p>
                 </div>
                 <div>
-                    <p className={`${ !(movie.music_director?.at(0))? 'hidden' : '' } text-xs font-bold`}>{movie.music_director?.at(0)?.name}</p>
-                    <p className={`${ !(movie.music_director?.at(0))? 'hidden' : '' } text-xs`}>Music</p>
+                    <p className={`${!(movie.music_director?.at(0)) ? 'hidden' : ''} text-xs font-bold`}>{movie.music_director?.at(0)?.name}</p>
+                    <p className={`${!(movie.music_director?.at(0)) ? 'hidden' : ''} text-xs`}>Music</p>
                 </div>
             </div>
             <h1 className='mt-5 px-5 font-semibold'>Top billed cast</h1>
